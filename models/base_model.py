@@ -4,8 +4,7 @@ and methods for other classes."""
 
 from uuid import uuid4
 from datetime import datetime
-import models
-
+from engine import storage
 
 class BaseModel:
     """ The base class for other classes.
@@ -21,11 +20,11 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
+            storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key in ("created_at", "updated_at"):
-                    setattr(self, key, /
+                    setattr(self, key, \
                             datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
                 elif key == "__class__":
                     pass
@@ -40,7 +39,7 @@ class BaseModel:
     def save(self):
         """ Updates the public instance attribute updated_at."""
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """ Returns a dictionary containing all
